@@ -6,6 +6,7 @@
     "dependencies": {
         "@polka/redirect": "^1.0.0-next.0",
         "@polka/send-type": "^0.5.2",
+        "@tt-bot-dev/extension-runner": "git+https://owo.codes/tt.bot/extensions/runner.git",
         "@types/node": "^13.11.0",
         "@types/node-fetch": "^2.5.5",
         "body-parser": "^1.19.0",
@@ -13,7 +14,7 @@
         "cookie": "^0.4.0",
         "cookie-parser": "^1.4.5",
         "cookie-signature": "^1.1.0",
-        "csurf": "github:tt-bot-dev/csurf",
+        "csurf": "git+https://owo.codes/tt.bot/external/csurf.git",
         "ejs": "^3.0.2",
         "emoji-regex": "^9.0.0",
         "eris": "github:abalabahaha/eris#dev",
@@ -21,7 +22,7 @@
         "express-session-rethinkdb": "^0.4.1",
         "gifwrap": "^0.9.2",
         "jimp": "^0.10.1",
-        "jimp-upng": "github:tt-bot-dev/jimp-upng",
+        "jimp-upng": "git+https://owo.codes/tt.bot/frameworks/jimp-upng.git",
         "mime-types": "^2.1.26",
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.28",
@@ -32,7 +33,7 @@
         "sosamba": "^1.0.1",
         "uuid": "^7.0.3",
         "vm2": "^3.9.1",
-        "workers-as-promised": "github:tt-bot-dev/WorkersAsPromised"
+        "workers-as-promised": "git+https://owo.codes/tt.bot/external/WorkersAsPromised.git"
     },
     "devDependencies": {
         "@tt-bot-dev/eslint-config": "^1.0.1",
@@ -43,7 +44,6 @@
     },
     "scripts": {
         "test": "eslint .",
-        "install": "node scripts/dbsetup",
         "db:setup": "node scripts/dbsetup",
         "web:js:uglify": "node scripts/uglify",
         "web:css:build": "node-sass --omit-source-map-url webserver/web-files/bulma.scss webserver/static/css/bulma.css"

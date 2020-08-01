@@ -20,7 +20,7 @@
 "use strict";
 const Command = require("../lib/commandTypes/OwnerCommand");
 const { inspect } = require("util");
-const ExtensionRunner = require("../lib/extensions/Runner");
+const ExtensionRunner = require("@tt-bot-dev/extension-runner");
 const CensorBuilder = require("../lib/CensorBuilder");
 const makeGist = require("../lib/gist");
 const { prefix } = require("../config");
@@ -33,17 +33,21 @@ class RunExtensionCommand extends Command {
     }
 
     async run(ctx, args) {
-        let { error: err } = ExtensionRunner(ctx, this.sosamba, args, {
+        const h = process.hrtime();
+        const err = await ExtensionRunner(ctx, this.sosamba, args, {
             id: "eval",
             name: "Evaluated extension",
             data: {
                 id: "evaluation"
-            }
+            },
+            flags: -1
         }, {
             prefix,
             trigger: "extension",
             args: ""
         });
+        const [sec, nsec] = process.hrtime(h);
+        console.log(sec, nsec / 1e6);
         let d = err || "Ran successfully!";
         const v = typeof d === "string" ? d : inspect(d);
         const description = `\`\`\`js\n${v.replace(new CensorBuilder([], this.sosamba).build(), "no.")}\n\`\`\``;

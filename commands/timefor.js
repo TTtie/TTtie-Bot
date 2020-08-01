@@ -18,7 +18,7 @@
  */
 
 "use strict";
-const { Command, SerializedArgumentParser, Serializers: {
+const { Command, SerializedArgumentParser, Eris: {
     User
 } } = require("sosamba");
 const UserProfile = require("../lib/Structures/UserProfile");

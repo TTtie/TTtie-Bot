@@ -49,9 +49,7 @@ class UserCommand extends Command {
             const nick = user.nick || this.sosamba.getTag(user);
             ctx.send({
                 embed: {
-                    author: {
-                        name: await ctx.t("USER_INFO", `${nick} ${nick === this.sosamba.getTag(user) ? "" : `(${this.sosamba.getTag(user)})`} (${user.id}) ${user.bot ? "(BOT)" : ""}`)
-                    },
+                    title: await ctx.t("USER_INFO", `${nick} ${nick === this.sosamba.getTag(user) ? "" : `(${this.sosamba.getTag(user)})`} (${user.id}) ${user.bot ? "(BOT)" : ""}`),
                     thumbnail: {
                         url: user.user.avatarURL
                     },
@@ -81,7 +79,7 @@ class UserCommand extends Command {
         } else {
             await ctx.send({
                 embed: {
-                    title: await ctx.t("USER_INFO", this.sosamba.getTag(user)),
+                    title: await ctx.t("USER_INFO", `${this.sosamba.getTag(user)} ${user.bot ? "(BOT)" : ""}`),
                     thumbnail: {
                         url: user.avatarURL
                     },

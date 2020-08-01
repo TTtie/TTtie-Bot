@@ -24,7 +24,7 @@ along with tt.bot.  If not, see <http://www.gnu.org/licenses/>.
 tt.bot is a simple to use moderation/utility bot written in JavaScript using [Node.js] and the [Sosamba] framework based on the [Eris] library.
 
 # Features
-- **Emoji to picutre**: A simple way to convert your magnificient emoji to an animated PNG image!
+- **Emoji to picture**: A simple way to convert your magnificent emoji to an animated PNG image!
 > *Rendering APNGs is not currently supported by Discord, thereby, the preview will display as a still image.*
 - **Extensions**: Is tt.bot's command suite not enough for you? Build your own commands using a powerful JavaScript API.
 - **Free software**: tt.bot is free software distributed under the [GNU AGPL v3 or later](./LICENSE). Translations for tt.bot are licensed under the [MIT License][language-license].

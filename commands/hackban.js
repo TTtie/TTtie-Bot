@@ -52,6 +52,10 @@ class HackbanCommand extends Command {
                 }
             });
         } else {
+            if (!this.sosamba.hasBotPermission(ctx.channel, "banMembers")) {
+                await ctx.send(await ctx.t("MISSING_PERMISSIONS"));
+                return;
+            }
             const send = users.length === 1;
             if (send) {
                 await this.doBan(ctx, users[0], true, false);
@@ -65,28 +69,15 @@ class HackbanCommand extends Command {
     }
 
     async doBan(ctx, id, send, mass) {
-        let userToBan = this.sosamba.users.get(id);
-        if (!userToBan) try {
-            userToBan = await this.sosamba.getUserWithoutRESTMode(id);
-        } catch {
-            if (send) await ctx.send({
-                embed: {
-                    color: 0xFFFF00,
-                    title: await ctx.t("USER_NOT_FOUND"),
-                    description: await ctx.t("USER_NOT_FOUND_DESCRIPTION")
-                }
-            });
-            return false;
-        }
-        const member = ctx.guild.members.get(userToBan.id);
+        const [ member ] = await this.sosamba.memberRequester.request(ctx.guild, [ id ]);
         try {
             if (member && !ctx.sosamba.passesRoleHierarchy(ctx.member, member)) {
                 await ctx.send(await ctx.t("ROLE_HIERARCHY_ERROR"));
                 return false;
             }
-            await ctx.guild.banMember(userToBan.id, 0, 
+            await ctx.guild.banMember(id, 0, 
                 `${mass === false ? "Hackbanned" : "Masshackbanned"} by ${ctx.sosamba.getTag(ctx.author)}`);
-            if (send) await ctx.send(await ctx.t("BAN_DONE", userToBan));
+            if (send) await ctx.send(await ctx.t("BAN_DONE", member || { username: `Unknown User (${id})`, discriminator: "0000" }));
             return true;   
         } catch (e) {
             console.error(e);

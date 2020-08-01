@@ -20,7 +20,7 @@
 "use strict";
 const config = require("../../config");
 const sa = require("chainfetch");
-const APIBase = "https://discordapp.com/api/v6/oauth2";
+const APIBase = "https://discordapp.com/api/v7/oauth2";
 const { Eris: { Client } } = require("sosamba");
 
 class Cache {

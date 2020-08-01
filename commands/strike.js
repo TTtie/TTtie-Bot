@@ -21,6 +21,7 @@
 const Command = require("../lib/commandTypes/ModCommand");
 const { SwitchArgumentParser, Serializers: { Member } } = require("sosamba");
 const UserProfile = require("../lib/Structures/UserProfile");
+const { PunishTypes } = require("../lib/modlog/constants");
 
 class StrikeCommand extends Command {
     constructor(sosamba, ...args) {
@@ -44,7 +45,7 @@ class StrikeCommand extends Command {
 
     async run(ctx, { user, reason }) {
         if (user.bot) return ctx.send(await ctx.t("BOTS_NOT_STRIKABLE"));
-        await this.sosamba.modLog.addStrike(user.id, ctx, reason);
+        await this.sosamba.modLog.createPunishment(ctx, PunishTypes.STRIKE, user.id, reason);
         const dm = await user.user.getDMChannel();
         const p = await ctx.db.getUserProfile(user.id);
         const prof = new UserProfile(p || {});

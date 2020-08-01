@@ -19,6 +19,7 @@
 
 "use strict";
 const { SwitchArgumentParser, Serializers: { Member } } = require("sosamba");
+const { PunishTypes } = require("../lib/modlog/constants");
 const Command = require("../lib/commandTypes/ModCommand");
 
 class BanCommand extends Command {
@@ -38,7 +39,12 @@ class BanCommand extends Command {
                 soft: {
                     type: Boolean,
                     default: false,
-                    description: "determines if this ban is a softban."
+                    description: "determines if the user will be unbanned immediately after banning."
+                },
+                days: {
+                    type: Number,
+                    default: 0,
+                    description: "the amount of days worth of messages to purge"
                 }
             }),
             description: "Bans a user."
@@ -49,11 +55,15 @@ class BanCommand extends Command {
         return ctx.member.permission.has("banMembers") || await super.permissionCheck(ctx);
     }
 
-    async run(ctx, { user, reason, soft }) {
+    async run(ctx, { user, reason, soft, days }) {
         if (this.sosamba.passesRoleHierarchy(ctx.member, user)) {
-            await ctx.guild.banMember(user.id, 1, `${this.sosamba.getTag(ctx.author)}: ${reason}`);
+            if (!this.sosamba.hasBotPermission(ctx.channel, "banMembers")) {
+                await ctx.send(await ctx.t("MISSING_PERMISSIONS"));
+                return;
+            }
+            await ctx.guild.banMember(user.id, days, encodeURIComponent(`${this.sosamba.getTag(ctx.author)}: ${reason}`));
             if (soft) await ctx.guild.unbanMember(user.id);
-            this.sosamba.modLog.addBan(user.id, ctx, reason, soft);
+            this.sosamba.modLog.createPunishment(ctx, soft ? PunishTypes.SOFTBAN : PunishTypes.BAN, user.id, reason).catch(() => void 0);
             await ctx.send(await ctx.t(`${soft ? "SOFT": ""}BAN_DONE`, user.user));
         } else {
             ctx.send(await ctx.t("ROLE_HIERARCHY_ERROR"));
